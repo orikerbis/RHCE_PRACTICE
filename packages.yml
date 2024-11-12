@@ -10,7 +10,7 @@
           - php
           - mariadb
         state: present
-      when: inventory_hostname in groups['dev'] or inventory_hostname in groups['test'] or               inventory_hostname in groups['prod']
+      when: inventory_hostname in groups['dev'] or inventory_hostname in groups['test'] or inventory_hostname in groups['prod']
 
     - name: install Development tools on dev
       dnf:
