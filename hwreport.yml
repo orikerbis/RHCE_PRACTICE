@@ -1,0 +1,14 @@
+---
+- name: Hardware report
+  hosts: all
+  become: yes
+  tasks:
+    - name: creating the file
+      copy:
+        content: |
+          HOST="{{ inventory_hostname }}"
+          Memory= "{{ ansible_memtotal_mb }}"
+          BIOS= "{{ ansible_bios_version }}"
+          Vda_size= "{{ ansible_devices['vda']['size'] | default('NONE') }}"
+          Vdb_size= "{{ ansible_devices['vdb']['size'] | default('NONE') }}"
+        dest: /root/hwreport

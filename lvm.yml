@@ -1,0 +1,35 @@
+---
+- name: configure logical volume
+  hosts: node1
+  become: yes
+  ignore_errors: yes
+  tasks:
+    - name: check if vg is exist
+      command: vgs research
+      register: vg_status
+
+    - name: error massege if vg does not exist
+      debug:
+        msg: "vg research does not exist"
+      when: vg_status.failed
+
+    - name: create data logical volume
+      lvol:
+        lv: data
+        vg: research
+        size: 1500M
+      when: vg_status is not failed 
+      register: lv_status
+
+    - name: error massege if logical volume not created
+      debug:
+        msg: "could not create logical volume because there is not enough space, creating 800M instead"
+      when: lv_status.failed and '"insufficient free space" in lv_status.err'    
+
+    - name: creting 800M lv
+      lvol:
+        lv: data
+        vg: research
+        size: 800M 
+      when: vg_status is not failed and lv_status.failed and '"insufficient free space" in lv_status.err'
+

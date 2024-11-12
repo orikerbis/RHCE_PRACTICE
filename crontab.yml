@@ -1,0 +1,12 @@
+- name: cronjob
+  hosts: all
+  become: yes
+  tasks:
+    - name: create cron job every 2 minutes
+      cron:
+        user: natasha
+        name: "logger"
+        minute: "*/2"
+        hour: "*"
+        job: "logger EX294 in progress"
+

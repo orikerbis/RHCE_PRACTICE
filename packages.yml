@@ -1,0 +1,25 @@
+---
+- name: installing package
+  hosts: all
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: install on dev,tes,prod
+      dnf:
+        name:
+          - php
+          - mariadb
+        state: present
+      when: inventory_hostname in groups['dev'] or inventory_hostname in groups['test'] or               inventory_hostname in groups['prod']
+
+    - name: install Development tools on dev
+      dnf:
+        name: '@RPM Development Tools'
+        state: present
+
+    - name: update packages
+      dnf:
+        name: '*'
+        state: latest
+      when: inventory_hostname in groups['dev']
+
