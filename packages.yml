@@ -16,8 +16,9 @@
       dnf:
         name: '@RPM Development Tools'
         state: present
+      when: inventory_hostname in groups['dev']
 
-    - name: update packages
+    - name: update packages on dev
       dnf:
         name: '*'
         state: latest
