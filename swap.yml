@@ -1,0 +1,28 @@
+---
+- name: making swap partition
+  hosts: node3
+  become: yes
+  tasks:
+    - name: creating partition
+      parted:
+        device: /dev/nvme0n2
+        number: 1
+        part_end: 512MiB
+        state: present
+
+    - name: swap filesystem
+      filesystem:
+        dev: /dev/nvme0n2p1
+        fstype: swap
+
+    - name: mkswap command
+      command: mkswap /dev/nvme0n2p1
+
+    - name: Make it presistent
+      lineinfile:
+        line: /dev/nvme0n2p1 none swap defaults 0 0
+        path: /etc/fstab
+
+    - name: swapom command
+      command: swapon -a 
+
