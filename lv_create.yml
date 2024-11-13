@@ -1,0 +1,29 @@
+---
+- name: LV creation 
+  hosts: node2
+  become: yes
+  tasks:
+    - name: patition creation
+      parted:
+        device: /dev/nvme0n2
+        number: 2
+        part_start: 3GiB
+        part_end: 5GiB
+        state: present
+
+    - name: VG creation
+      lvg:
+        vg: vg_test
+        pvs: /dev/nvme0n2p2
+
+    - name: LV creation
+      lvol:
+        vg: vg_test
+        lv: lv_test
+        size: 1G
+
+    - name: filesystem on lv
+      filesystem:
+        fstype: ext4
+        dev: /dev/vg_test/lv_test
+      
