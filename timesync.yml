@@ -6,6 +6,6 @@
     timesync_ntp_servers:
       - hostname: classroom.example.com
         pool: true
-        iburst: true§
+        iburst: true
   roles:
     - rhel-system-roles.timesync

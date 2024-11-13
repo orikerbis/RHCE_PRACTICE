@@ -10,14 +10,15 @@
           - php
           - mariadb
         state: present
-      when: inventory_hostname in groups['dev'] or inventory_hostname in groups['test'] or               inventory_hostname in groups['prod']
+      when: inventory_hostname in groups['dev'] or inventory_hostname in groups['test'] or inventory_hostname in groups['prod']
 
     - name: install Development tools on dev
       dnf:
         name: '@RPM Development Tools'
         state: present
+      when: inventory_hostname in groups['dev']
 
-    - name: update packages
+    - name: update packages on dev
       dnf:
         name: '*'
         state: latest
