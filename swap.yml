@@ -14,9 +14,7 @@
       filesystem:
         dev: /dev/nvme0n2p1
         fstype: swap
-
-    - name: mkswap command
-      command: mkswap /dev/nvme0n2p1
+        
 
     - name: Make it presistent
       lineinfile:
